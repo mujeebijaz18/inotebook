@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 
-const Login = () => {
+const Login = (props) => {
     let history = useHistory();
     const [credentials, setCredentials] = useState({ email: "", password: "" })
 
@@ -19,9 +19,11 @@ const Login = () => {
         if (json.success) {
             localStorage.setItem('token', json.authToken);
             history.push('/');
+            props.showAlert('Logged in successfully', 'success');
         }
         else {
-            alert("Invalid Credentials");
+            localStorage.removeItem('token');
+            props.showAlert('Invalid Credentials', 'danger');
         }
     }
 
@@ -42,6 +44,7 @@ const Login = () => {
                     <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
                     <input type="password" className="form-control" name="password" value={credentials.password} onChange={onChange} id="exampleInputPassword1" />
                 </div>
+                <div className="mb-4"><Link to="/signup">Create an account?</Link></div>
 
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>

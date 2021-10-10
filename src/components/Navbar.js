@@ -1,7 +1,11 @@
 import React from 'react'
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
+import Profile from './Profile';
+
+
 
 const Navbar = () => {
+
 
 
     //Set Navbar Active class
@@ -9,7 +13,16 @@ const Navbar = () => {
     // useEffect(() => {
     //     console.log(location.pathname);
     // }, [location]);
+    let history = useHistory();
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        history.push('/login');
+    }
 
+    const handleProfile = () => {
+        <Profile />
+        console.log("Profile clicked")
+    }
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -27,10 +40,10 @@ const Navbar = () => {
                             <Link className={`nav-link ${location.pathname === '/about' ? "active" : ""}`} to="/about">About</Link>
                         </li>
                     </ul>
-                    <form className="d-flex">
+                    {localStorage.getItem('token') === null ? <form className="d-flex">
                         <Link className="btn btn-primary max-1" to="/login" role="button">Login</Link>
                         <Link className="btn btn-outline-primary mx-1" to="/signup" role="button">Signup</Link>
-                    </form>
+                    </form> : <div><Link className="btn btn-outline-primary mx-2" to="/profile" role="button">Profile</Link><button onClick={handleLogout} className="btn btn-primary">Logout</button></div>}
                 </div>
             </div>
         </nav>
